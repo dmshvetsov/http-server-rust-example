@@ -1,5 +1,6 @@
-use http::Method;
 use http::Request;
+use http::Response;
+use http::StatusCode;
 use server::Server;
 
 mod http;

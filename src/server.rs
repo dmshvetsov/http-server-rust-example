@@ -1,4 +1,4 @@
-use crate::Request;
+use crate::{Request, Response, StatusCode};
 use std::convert::TryFrom;
 use std::io::Read;
 use std::net::TcpListener;
@@ -30,6 +30,11 @@ impl Server {
                             match Request::try_from(&buf[..]) {
                                 Ok(request) => {
                                     dbg!(request);
+                                    let res = Response::new(
+                                        StatusCode::Ok,
+                                        Some("<h1>Rust Server Up and Running</h1>".to_string()),
+                                    );
+                                    res.send(&mut stream);
                                 }
                                 Err(e) => println!("Failed to parse request: {}", e),
                             }
