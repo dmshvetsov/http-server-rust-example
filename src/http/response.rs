@@ -13,6 +13,7 @@ pub enum StatusCode {
     Forbiden = 403,
     NotFound = 404,
     Conflict = 409,
+    InternalServerError = 500,
 }
 
 impl StatusCode {
@@ -27,6 +28,7 @@ impl StatusCode {
             Self::Forbiden => "Forbiden",
             Self::NotFound => "Not found",
             Self::Conflict => "Conflict",
+            Self::InternalServerError => "Internal server error",
         }
     }
 }
@@ -55,7 +57,7 @@ impl Response {
             self.status_code,
             self.status_code.reason_phrase(),
             match &self.body {
-                Some(body) => body,
+                Some(content) => content,
                 None => "",
             },
         )
