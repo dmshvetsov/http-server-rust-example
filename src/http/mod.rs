@@ -5,5 +5,5 @@ pub use request::Request;
 pub use response::Response;
 pub use response::StatusCode;
 
-mod request;
-mod response;
+pub mod request;
+pub mod response;
