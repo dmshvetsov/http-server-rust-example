@@ -26,17 +26,23 @@ impl Server {
                     let mut buf = [0; 1024];
                     match stream.read(&mut buf) {
                         Ok(_) => {
-                            // println!("{}", String::from_utf8_lossy(&buf));
-                            match Request::try_from(&buf[..]) {
+                            println!("Received a request: {}", String::from_utf8_lossy(&buf));
+
+                            let res = match Request::try_from(&buf[..]) {
                                 Ok(request) => {
                                     dbg!(request);
-                                    let res = Response::new(
+                                    Response::new(
                                         StatusCode::Ok,
                                         Some("<h1>Rust Server Up and Running</h1>".to_string()),
-                                    );
-                                    res.send(&mut stream);
+                                    )
                                 }
-                                Err(e) => println!("Failed to parse request: {}", e),
+                                Err(e) => {
+                                    println!("Failed to parse request: {}", e);
+                                    Response::new(StatusCode::BadRequest, None)
+                                }
+                            };
+                            if let Err(e) = res.send(&mut stream) {
+                                println!("Failed to send response: { }", e);
                             }
                         }
                         Err(e) => println!("Failed to read request: {}", e),
