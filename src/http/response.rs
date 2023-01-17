@@ -50,7 +50,7 @@ impl Response {
         Response { status_code, body }
     }
 
-    pub fn send(&self, stream: &mut TcpStream) -> IoResult<()> {
+    pub fn send(&self, stream: &mut impl Write) -> IoResult<()> {
         write!(
             stream,
             "HTTP/1.1 {} {}\r\n\r\n{}",
