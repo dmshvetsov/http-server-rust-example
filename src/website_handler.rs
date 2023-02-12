@@ -25,9 +25,11 @@ impl Handler for WebsiteHandler {
                 "/" => Response::new(
                     StatusCode::Ok,
                     self.read_file("index.html"),
-                    // Some("<h1>Rust Server Up and Running</h1>".to_string()),
                 ),
-                _ => Response::new(StatusCode::NotFound, None),
+                path => match self.read_file(path) {
+                    Some(content) => Response::new(StatusCode::Ok, Some(content)),
+                    None => Response::new(StatusCode::NotFound, None),
+                },
             },
             _ => Response::new(StatusCode::NotImplemented, None),
         }
