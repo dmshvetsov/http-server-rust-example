@@ -13,6 +13,7 @@ pub enum StatusCode {
     NotFound = 404,
     Conflict = 409,
     InternalServerError = 500,
+    NotImplemented = 501,
 }
 
 impl StatusCode {
@@ -28,6 +29,7 @@ impl StatusCode {
             Self::NotFound => "Not found",
             Self::Conflict => "Conflict",
             Self::InternalServerError => "Internal server error",
+            Self::NotImplemented => "Not implemented",
         }
     }
 }
