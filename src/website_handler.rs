@@ -9,12 +9,22 @@ pub struct WebsiteHandler {
 
 impl WebsiteHandler {
     pub fn new(public_path: String) -> Self {
+        // TODO convert to absolute path
         Self { public_path }
     }
 
     pub fn read_file(&self, file_name: &str) -> Option<String> {
         let file_path = format!("{}/{}", self.public_path, file_name); 
-        fs::read_to_string(file_path).ok()
+        match fs::canonicalize(&file_path) {
+            Ok(valid_file_path) => {
+                if valid_file_path.starts_with(&self.public_path) {
+                    fs::read_to_string(valid_file_path).ok()
+                } else {
+                    None
+                }
+            },
+            Err(_) => None,
+        }
     }
 }
 
